@@ -1,4 +1,4 @@
-// clock24.ucf
+// countdown_24hour.ucf
 NET "clk0"		LOC = L15;	// CLK
 
 NET "led(6)"	LOC = P16;	// LD6
