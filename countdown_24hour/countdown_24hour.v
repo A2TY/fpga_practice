@@ -10,7 +10,7 @@ module countdown_24hour(
 	output wire [6:0] led
 );
 	assign line = 4'b0001<<ab;
-	assign led  = { 2'b00, count6, count10 };
+	assign led  = { 2'b00, min_6_count, min_10_count };
 	assign seg7 = { 1'b0, disp };
 	parameter[3:0] hour_10_change[0:9] = {4'd3, 4'd2, 4'd1, 4'd0, 4'd9, 4'd8, 4'd7, 4'd6, 4'd5, 4'd4};
 
@@ -105,6 +105,8 @@ module countdown_24hour(
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( min_6_enable )begin
+            if( hour_3_count==4'd0 )
+                hour_10_enable <= 1'b1;
 			if( hour_10_count==4'd9 )begin
 				hour_10_count<=1'b0;
 				hour_10_enable <= 1'b1;
