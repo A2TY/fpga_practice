@@ -27,7 +27,7 @@ module countdown_24hour(
 			7'b1101111  //9
 	};
 
-	// ƒ_ƒCƒiƒ~ƒbƒN•\¦
+	// ãƒ€ã‚¤ãƒŠãƒŸãƒƒã‚¯è¡¨ç¤º
 	reg[6:0] disp=7'b0;
 	reg[3:0] x;
 	reg[1:0] ab = 1'b0;
@@ -49,7 +49,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 1•b¶¬
+	// 1ç§’ç”Ÿæˆ
 	reg[26:0] c=27'b0;
 	reg sec_enable=1'b0;
 	always @( posedge clk0 )begin
@@ -63,7 +63,7 @@ module countdown_24hour(
 		end
 	end
 
-	// •ª‚ğ•\‚·10iƒJƒEƒ“ƒ^
+	// åˆ†ã‚’è¡¨ã™10é€²ã‚«ã‚¦ãƒ³ã‚¿
 	reg[3:0] min_10_count=4'b0;
 	reg min_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -82,7 +82,7 @@ module countdown_24hour(
 		end
 	end
 
-	// •ª‚ğ•\‚·6iƒJƒEƒ“ƒ^
+	// åˆ†ã‚’è¡¨ã™6é€²ã‚«ã‚¦ãƒ³ã‚¿
 	reg[2:0] min_6_count=3'b0;
 	reg min_6_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -100,14 +100,14 @@ module countdown_24hour(
 			min_6_enable <= 1'b0;
 	end
 
-	// ‚ğ•\‚·10iƒJƒEƒ“ƒ^
+	// æ™‚ã‚’è¡¨ã™10é€²ã‚«ã‚¦ãƒ³ã‚¿
 	reg[3:0] hour_10_count=4'b0;
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( min_6_enable )begin
-            if( hour_3_count==4'd0 )
-                hour_10_enable <= 1'b1;
-			if( hour_10_count==4'd9 )begin
+			if( hour_10_count==4'd3 && hour_3_count==4'd0 )
+				hour_10_enable <= 1'b1;
+			else if( hour_10_count==4'd9 )begin
 				hour_10_count<=1'b0;
 				hour_10_enable <= 1'b1;
 			end
@@ -125,7 +125,7 @@ module countdown_24hour(
 		end
 	end
 
-	// ‚ğ•\‚·3iƒJƒEƒ“ƒ^
+	// æ™‚ã‚’è¡¨ã™3é€²ã‚«ã‚¦ãƒ³ã‚¿
 	reg[1:0] hour_3_count=2'b0;
 	always @( posedge clk0 )begin
 		if( hour_10_enable )
