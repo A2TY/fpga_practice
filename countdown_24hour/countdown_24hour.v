@@ -27,7 +27,7 @@ module countdown_24hour(
 			7'b1101111  //9
 	};
 
-	// ダイナミック表示
+	// ダイナミヂ�表示
 	reg[6:0] disp=7'b0;
 	reg[3:0] x;
 	reg[1:0] ab = 1'b0;
@@ -49,11 +49,11 @@ module countdown_24hour(
 		end
 	end
 
-	// 1秒生成
+	// 1秒生�
 	reg[26:0] c=27'b0;
 	reg sec_enable=1'b0;
 	always @( posedge clk0 )begin
-		if( c==27'd4999999 )begin // 100,000,000-1
+		if( c==27'd499999 )begin // 100,000,000-1
 			c <= 0;
 			sec_enable <= 1'b1;
 		end
@@ -63,7 +63,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 分を表す10進カウンタ
+	// 刂�表�0進カウンタ
 	reg[3:0] min_10_count=4'b0;
 	reg min_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -82,7 +82,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 分を表す6進カウンタ
+	// 刂�表�進カウンタ
 	reg[2:0] min_6_count=3'b0;
 	reg min_6_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -100,21 +100,25 @@ module countdown_24hour(
 			min_6_enable <= 1'b0;
 	end
 
-	// 時を表す10進カウンタ
+	// 時を表�0進カウンタ
 	reg[3:0] hour_10_count=4'b0;
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( min_6_enable )begin
-			if( hour_10_count==4'd3 && hour_3_count==4'd0 )
-				hour_10_enable <= 1'b1;
-			else if( hour_10_count==4'd9 )begin
-				hour_10_count<=1'b0;
+			if( hour_10_count==4'd3 && hour_3_count==4'd0 )begin
+				hour_10_count <= hour_10_count + 1'b1;
 				hour_10_enable <= 1'b1;
 			end
-			else if( hour_10_count==4'd3 && hour_3_count==2'd2 )begin
-				hour_10_count<=1'b0;
+			else if( hour_10_count==4'd3 && hour_3_count==4'd1 )begin
+				hour_10_count <= hour_10_count + 1'b1;
 				hour_10_enable <= 1'b1;
 			end
+			else if( hour_10_count==4'd3 && hour_3_count==4'd2 )begin
+				hour_10_count <= 1'b0;
+				hour_10_enable <= 1'b1;
+			end
+			else if( hour_10_count==4'd9 )
+				hour_10_count <= 1'b0;
 			else begin
 				hour_10_count <= hour_10_count + 1'b1;
 				hour_10_enable <= 1'b0;
@@ -125,7 +129,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 時を表す3進カウンタ
+	// 時を表�進カウンタ
 	reg[1:0] hour_3_count=2'b0;
 	always @( posedge clk0 )begin
 		if( hour_10_enable )
