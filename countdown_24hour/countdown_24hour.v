@@ -27,7 +27,7 @@ module countdown_24hour(
 			7'b1101111  //9
 	};
 
-	// ダイナミヂ�表示
+	// ダイナミック点灯表示
 	reg[6:0] disp=7'b0;
 	reg[3:0] x;
 	reg[1:0] ab = 1'b0;
@@ -49,7 +49,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 1秒生�
+	// 1秒生成
 	reg[26:0] c=27'b0;
 	reg sec_enable=1'b0;
 	always @( posedge clk0 )begin
@@ -63,7 +63,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 刂�表�0進カウンタ
+	// 分表示用の10進カウンタ
 	reg[3:0] min_10_count=4'b0;
 	reg min_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -82,7 +82,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 刂�表�進カウンタ
+	// 分表示用の6進カウンタ
 	reg[2:0] min_6_count=3'b0;
 	reg min_6_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -100,7 +100,7 @@ module countdown_24hour(
 			min_6_enable <= 1'b0;
 	end
 
-	// 時を表�0進カウンタ
+	// 時表示用の10進カウンタ
 	reg[3:0] hour_10_count=4'b0;
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -129,7 +129,7 @@ module countdown_24hour(
 		end
 	end
 
-	// 時を表�進カウンタ
+	// 時表示用の3進カウンタ
 	reg[1:0] hour_3_count=2'b0;
 	always @( posedge clk0 )begin
 		if( hour_10_enable )
