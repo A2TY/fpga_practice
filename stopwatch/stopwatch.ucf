@@ -25,4 +25,5 @@ NET "line(2)" 	LOC = R8; 	// IO12 01
 NET "line(1)" 	LOC = M8; 	// IO13 02
 NET "line(0)" 	LOC = U8; 	// IO14 03
 
-NET "btn"       LOC = F5;	// BTNC
+NET "btn"       LOC = F5;   // BTNC
+NET "btn_2"     LOC = P3;	// BTND

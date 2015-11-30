@@ -1,11 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Create Date:    12:29:40 11/25/2015
-// Module Name:    stopwatch
+// Create Date:    12:29:40 10/22/2015
+// Module Name:    counter30
 //////////////////////////////////////////////////////////////////////////////////
 module stopwatch(
 	input wire  clk0,
 	input wire	btn,
+	input wire	btn_2,
 	output wire [7:0] seg7,
 	output wire [3:0] line,
 	output wire [6:0] led
@@ -27,7 +28,7 @@ module stopwatch(
 			7'b1101111  //9
 	};
 
-	// ダイナミック点灯表示
+	// ダイナミック表示
 	reg[6:0] disp=7'b0;
 	reg[3:0] x;
 	reg[1:0] ab = 1'b0;
@@ -48,7 +49,7 @@ module stopwatch(
 			ab <= ab + 1'b1;
 		end
 	end
-
+	
 	// 停止・再開ボタン
 	reg btnc = 1'b1;
 	always @( posedge clk0 )begin
@@ -57,7 +58,7 @@ module stopwatch(
 		if ( btn && btnc==1'b1 )
 			btnc <= 1'b0;
 	end
-
+	
 	// 1秒生成
 	reg [26:0] c=27'b0;
 	reg sec_enable=1'b0;
@@ -72,7 +73,7 @@ module stopwatch(
 		end
 	end
 
-	// 分表示用の10進カウンタ
+	// 分を表す10進カウンタ
 	reg[3:0] min_10_count=4'b0;
 	reg min_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -89,9 +90,11 @@ module stopwatch(
 		else begin
 			min_10_enable <= 1'b0;
 		end
+		if( btn_2 )
+			min_10_count <= 1'b0;
 	end
 
-	// 分表示用の6進カウンタ
+	// 分を表す6進カウンタ
 	reg[2:0] min_6_count=3'b0;
 	reg min_6_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -107,9 +110,11 @@ module stopwatch(
 		end
 		else
 			min_6_enable <= 1'b0;
+		if( btn_2 )
+			min_6_count <= 1'b0;
 	end
 
-	// 時表示用の10進カウンタ
+	// 時を表す10進カウンタ
 	reg[3:0] hour_10_count=4'b0;
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
@@ -119,7 +124,7 @@ module stopwatch(
 				hour_10_enable <= 1'b1;
 			end
 			else if( hour_10_count==4'd3 && hour_3_count==2'd2 )begin
-				hour_10_count<=1'b0;
+				hour_10_count <= 1'b0;
 				hour_10_enable <= 1'b1;
 			end
 			else begin
@@ -130,13 +135,17 @@ module stopwatch(
 		else begin
 			hour_10_enable <= 1'b0;
 		end
+		if( btn_2 )
+			hour_10_count <= 1'b0;
 	end
 
-	// 時表示用の3進カウンタ
+	// 時を表す3進カウンタ
 	reg[1:0] hour_3_count=2'b0;
 	always @( posedge clk0 )begin
 		if( hour_10_enable )
 			hour_3_count <= (hour_3_count==2'd2)?1'b0:(hour_3_count+1'b1);
+		if( btn_2 )
+			hour_3_count <= 1'b0;
 	end
 
 endmodule
