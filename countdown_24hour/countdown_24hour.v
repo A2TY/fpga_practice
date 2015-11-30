@@ -14,7 +14,7 @@ module countdown_24hour(
 	assign seg7 = { 1'b0, disp };
 	parameter[3:0] hour_10_change[0:9] = {4'd3, 4'd2, 4'd1, 4'd0, 4'd9, 4'd8, 4'd7, 4'd6, 4'd5, 4'd4};
 
-	parameter [6:0] seg7_data[0:9]={
+	parameter [6:0] seg7_data[0:9] = {
 			7'b0111111, //0
 			7'b0000110, //1
 			7'b1011011, //2
@@ -28,11 +28,11 @@ module countdown_24hour(
 	};
 
 	// ダイナミック点灯表示
-	reg[6:0] disp=7'b0;
+	reg[6:0] disp = 7'b0;
 	reg[3:0] x;
 	reg[1:0] ab = 1'b0;
 	always @( posedge clk0 )begin
-		if(c[9:0]==0)begin
+		if( c[9:0] == 0 )begin
 			if( ab == 2'b00 )
 				x <= hour_10_change[hour_10_count];
 			else if( ab == 2'b01 )
@@ -41,7 +41,7 @@ module countdown_24hour(
 				x <= 4'd9 - min_10_count;
 			else
 				x <= 4'd5 - min_6_count;
-			if(x<=4'd9)
+			if( x <= 4'd9 )
 				disp <= seg7_data[x];
 			else
 				disp <= 7'b0000000;
@@ -50,10 +50,10 @@ module countdown_24hour(
 	end
 
 	// 1秒生成
-	reg[26:0] c=27'b0;
-	reg sec_enable=1'b0;
+	reg[26:0] c = 27'b0;
+	reg sec_enable = 1'b0;
 	always @( posedge clk0 )begin
-		if( c==27'd499999 )begin // 100,000,000-1
+		if( c == 27'd99999999 )begin // 100,000,000-1
 			c <= 0;
 			sec_enable <= 1'b1;
 		end
@@ -64,12 +64,12 @@ module countdown_24hour(
 	end
 
 	// 分表示用の10進カウンタ
-	reg[3:0] min_10_count=4'b0;
+	reg[3:0] min_10_count = 4'b0;
 	reg min_10_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( sec_enable )begin
-			if( min_10_count==4'd9 )begin
-				min_10_count<=1'b0;
+			if( min_10_count == 4'd9 )begin
+				min_10_count <= 1'b0;
 				min_10_enable <= 1'b1;
 			end
 			else begin
@@ -83,11 +83,11 @@ module countdown_24hour(
 	end
 
 	// 分表示用の6進カウンタ
-	reg[2:0] min_6_count=3'b0;
+	reg[2:0] min_6_count = 3'b0;
 	reg min_6_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( min_10_enable )begin
-			if( min_6_count==3'd5 )begin
+			if( min_6_count == 3'd5 )begin
 				min_6_count <= 1'b0;
 				min_6_enable <= 1'b1;
 			end
@@ -101,23 +101,23 @@ module countdown_24hour(
 	end
 
 	// 時表示用の10進カウンタ
-	reg[3:0] hour_10_count=4'b0;
+	reg[3:0] hour_10_count = 4'b0;
 	reg hour_10_enable = 1'b0;
 	always @( posedge clk0 )begin
 		if( min_6_enable )begin
-			if( hour_10_count==4'd3 && hour_3_count==4'd0 )begin
+			if( hour_10_count == 4'd3 && hour_3_count == 4'd0 )begin
 				hour_10_count <= hour_10_count + 1'b1;
 				hour_10_enable <= 1'b1;
 			end
-			else if( hour_10_count==4'd3 && hour_3_count==4'd1 )begin
+			else if( hour_10_count == 4'd3 && hour_3_count == 4'd1 )begin
 				hour_10_count <= hour_10_count + 1'b1;
 				hour_10_enable <= 1'b1;
 			end
-			else if( hour_10_count==4'd3 && hour_3_count==4'd2 )begin
+			else if( hour_10_count == 4'd3 && hour_3_count == 4'd2 )begin
 				hour_10_count <= 1'b0;
 				hour_10_enable <= 1'b1;
 			end
-			else if( hour_10_count==4'd9 )
+			else if( hour_10_count == 4'd9 )
 				hour_10_count <= 1'b0;
 			else begin
 				hour_10_count <= hour_10_count + 1'b1;
@@ -130,10 +130,10 @@ module countdown_24hour(
 	end
 
 	// 時表示用の3進カウンタ
-	reg[1:0] hour_3_count=2'b0;
+	reg[1:0] hour_3_count = 2'b0;
 	always @( posedge clk0 )begin
 		if( hour_10_enable )
-			hour_3_count <= (hour_3_count==2'd2)?1'b0:(hour_3_count+1'b1);
+			hour_3_count <= ( hour_3_count == 2'd2 )?1'b0:( hour_3_count + 1'b1 );
 	end
 
 endmodule
